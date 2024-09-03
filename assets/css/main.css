@@ -25,8 +25,6 @@
 body {
     font-family: "Roboto", sans-serif;
     font-size: 18px;
-    scrollbar-width: 5px;
-    scrollbar-color: #888 #f1f1f1;
 }
 /*  top header styling     */ 
 header {
@@ -175,7 +173,7 @@ nav {
     text-decoration: none;
     color: #979595;
 }
-.nav-items .active {
+.nav-items .active-nav {
     font-weight: 700 !important;
     color: #e83a89 !important;
 }
@@ -261,57 +259,69 @@ h2 {
 
 .custom-select {
     position: relative;
-    width: 400px;
-    max-width: 100%;
-    font-size: 1.25rem;
+    width: 500px;
+    max-width:90%;
     color: #000;
-    margin-top: 3rem;
+    font-size: bolder;
+    margin-top: 1rem;
+
   }
   
   .select-button {
-    width: 100%;
-    font-size: 1.25rem;
-    background-color: #fff;
+    display: flex;
+    border: 1px solid lightgray;
+
+    font-size:18px;
+    background-color: white;
     padding: 0.675em 1em;
-    border: 1px solid #caced1;
     border-radius: 0.25rem;
     cursor: pointer;
-  
+    font-weight: 700;
+    justify-content: space-between;
+
+  line-height: 1; /* Ensure line-height does not affect vertical alignment */
+  box-sizing: border-box; /* Make sure padding and border are included in element's total width and height */
+}
+  .active{
+    border: 2px solid #e83a89;
+    border-radius: 4px;
+
+  }
+  .selected-value {
     display: flex;
+    font-size: 18px;
     justify-content: space-between;
     align-items: center;
+
+
   }
-  
-  .selected-value {
-    text-align: left;
-  }
+ 
   
   .arrow {
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 6px solid #000;
+    border-top: 6px solid lightgray;
     transition: transform ease-in-out 0.3s;
   }
   
   .select-dropdown {
     position: absolute;
     list-style: none;
-    width: 100%;
+    width:100%;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     background-color: #fff;
-    border: 1px solid #caced1;
+    border: 3px solid #e83a89;
     border-radius: 4px;
-   
     max-height: 200px;
     overflow-y: auto;
     transition: 0.5s ease;
-  
     transform: scaleY(0);
     opacity: 0;
     visibility: hidden;
+    z-index: 10000;
   }
   .select-dropdown:focus{
-    border: 1px solid #e83a89;
+    border:2px solid #e83a89;
 
   }
   
@@ -377,7 +387,7 @@ h2 {
     opacity: 1;
     visibility: visible;
     transform: scaleY(1);
-    border: 1px solid #e83a89;
+    border: 3px solid #e83a89;
 
   }
   .select-dropdown li:hover {
@@ -389,7 +399,10 @@ h2 {
     color: white;
   }
   
-  
+  .custom-select img {
+    margin: 0px 5px;
+    
+  }
   /*=============
   Aesthetics 
   =========================*/

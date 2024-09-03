@@ -9,7 +9,8 @@
                         <span class="ng-star-inserted"> Let's get started, </span>
                         what car do you drive?
                     </h2>
-                  <?php include "./inputs/selectDate.php"?>
+                    <div id="select-year-container"></div>
+                    <div id="select-vehicle-maker"></div>
 
                 </div>
             </form>
