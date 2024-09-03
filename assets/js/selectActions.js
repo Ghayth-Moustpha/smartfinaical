@@ -12,7 +12,7 @@ const selectComponent = new SelectComponent({
   name: 'year',
   placeholder: 'Select Vehicle Year',
   onChange: (value) => {
-    console.log('Selected year:', value);
+    s
   }
 });
 
