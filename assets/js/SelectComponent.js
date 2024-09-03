@@ -1,96 +1,118 @@
 export default class SelectComponent {
-  constructor({ options = [], name = "select", placeholder = "Select an option", onChange = () => {} }) {
+  constructor({ options, container, placeholder = "Select Item", onChange }) {
     this.options = options;
-    this.name = name;
+    this.container = container;
     this.placeholder = placeholder;
-    this.onChange = onChange;
-    this.selectedValue = null;
+    this.onChange = onChange; // Save the onChange handler
+
+    // Create the custom select element
+    this.customSelect = document.createElement("div");
+    this.customSelect.classList.add("custom-select");
   }
 
-  // Method to render the custom select component
-  render(container) {
-    // Create main wrapper div
-    const customSelect = document.createElement("div");
-    customSelect.classList.add("custom-select");
-
-    // Create select button
+  // Render the select dropdown with logos (if provided)
+  render() {
+    // Create the select button
     const selectBtn = document.createElement("span");
     selectBtn.classList.add("select-button");
     selectBtn.setAttribute("role", "combobox");
     selectBtn.setAttribute("aria-haspopup", "listbox");
     selectBtn.setAttribute("aria-expanded", "false");
-    selectBtn.innerHTML = `
-      <span class="selected-value">${this.placeholder}</span>
-      <span class="arrow"></span>
-    `;
 
-    customSelect.appendChild(selectBtn);
+    // Placeholder for the initial selection
+    selectBtn.innerHTML = `<span class="selected-value">${this.placeholder}</span><span class="arrow"></span>`;
+    this.customSelect.appendChild(selectBtn);
 
-    // Create dropdown menu
+    // Create the dropdown list
     const selectDropdown = document.createElement("ul");
     selectDropdown.classList.add("select-dropdown");
     selectDropdown.setAttribute("role", "listbox");
 
-    // Populate dropdown with options
+    // Loop through the options array to create options
     this.options.forEach((option, index) => {
       const li = document.createElement("li");
       li.setAttribute("role", "option");
 
       const radio = document.createElement("input");
       radio.type = "radio";
-      radio.id = `${this.name}-${index}`;
-      radio.name = this.name;
+      radio.id = `option-${index}`;
+      radio.name = "option";
       radio.value = option.value;
 
       const label = document.createElement("label");
-      label.setAttribute("for", `${this.name}-${index}`);
-      label.textContent = option.label;
+      label.setAttribute("for", `option-${index}`);
+
+      // Conditionally add the image if the logo exists
+      if (option.logo) {
+        const img = document.createElement("img");
+        img.src = option.logo;
+        img.alt = option.label;
+        img.style.width = "36px";  // Adjust the size of the image
+        img.style.marginRight = "10px";  // Add some space between image and text
+        label.appendChild(img);  // Append the logo image
+      }
+
+      // Append the option name text
+      label.appendChild(document.createTextNode(option.label));
 
       li.appendChild(radio);
       li.appendChild(label);
       selectDropdown.appendChild(li);
     });
 
-    customSelect.appendChild(selectDropdown);
-    container.appendChild(customSelect);
-
-    // Add event listeners for the select behavior
-    this.handleSelectBehavior(customSelect);
+    this.customSelect.appendChild(selectDropdown);
+    this.container.appendChild(this.customSelect);
+    this.handleSelectBehavior(); // Attach event listeners
   }
 
-  // Method to handle the dropdown behavior
-  handleSelectBehavior(customSelect) {
-    const selectBtn = customSelect.querySelector(".select-button");
-    const selectedValueSpan = customSelect.querySelector(".selected-value");
-    const optionsList = customSelect.querySelectorAll(".select-dropdown li");
+  // Handle the select dropdown behavior
+  handleSelectBehavior() {
+    const selectBtn = this.customSelect.querySelector(".select-button");
+    const selectedValueSpan = this.customSelect.querySelector(".selected-value");
+    const optionsList = this.customSelect.querySelectorAll(".select-dropdown li");
 
+    // Toggle the dropdown
     selectBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      customSelect.classList.toggle("active");
+      this.customSelect.classList.toggle("active");
 
       const isExpanded = selectBtn.getAttribute("aria-expanded") === "true";
       selectBtn.setAttribute("aria-expanded", !isExpanded ? "true" : "false");
     });
 
+    // Handle option selection
     optionsList.forEach((option) => {
       option.addEventListener("click", (e) => {
         e.stopPropagation();
         const radio = option.querySelector("input");
-        this.selectedValue = radio.value;
+        radio.checked = true;
 
-        selectedValueSpan.textContent = option.querySelector("label").textContent;
-        customSelect.classList.remove("active");
+        // Update the displayed selected value with the chosen option's name and logo
+        selectedValueSpan.innerHTML = "";  // Clear previous content
+
+        const label = option.querySelector("label").cloneNode(true);
+        const img = label.querySelector("img");
+
+        // Add the logo (if present) and the option name to the selected value
+        if (img) {
+          selectedValueSpan.appendChild(img.cloneNode(true));
+        }
+        selectedValueSpan.appendChild(document.createTextNode(` ${label.textContent.trim()}`));
+
+        this.customSelect.classList.remove("active");
         selectBtn.setAttribute("aria-expanded", "false");
 
-        // Trigger the onChange callback with the selected value
-        this.onChange(this.selectedValue);
+        // Trigger the onChange event and pass the selected value
+        if (this.onChange) {
+          this.onChange(radio.value); // Call onChange with selected value
+        }
       });
     });
 
-    // Close the dropdown when clicking outside
+    // Close the dropdown when clicking outside of it
     document.addEventListener("click", () => {
-      if (customSelect.classList.contains("active")) {
-        customSelect.classList.remove("active");
+      if (this.customSelect.classList.contains("active")) {
+        this.customSelect.classList.remove("active");
         selectBtn.setAttribute("aria-expanded", "false");
       }
     });

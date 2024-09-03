@@ -10,8 +10,8 @@
                         what car do you drive?
                     </h2>
                     <div id="select-year-container"></div>
-                    <div id="select-vehicle-maker"></div>
-
+                    <div id="select-2-container"></div>
+                    <div id="select-3-container"></div>
                 </div>
             </form>
         </div>

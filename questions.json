@@ -61,15 +61,18 @@
               "questionText": "Select Vehicle Make",
               "userAnswer": "",
               "isVisible": false,
-              "optionsUrl": "https://api.smartfinancial.com/api/v2/vehicle/makes?"
+              "parameters" : ["year"] ,
+              "optionsUrl": "https://api.smartfinancial.com/api/v2/vehicle/makes"
             },
             {
               "questionId": 3,
               "type": "select",
               "questionText": "Select Vehicle Model",
               "userAnswer": "",
+              "parameters" : ["year" , "make"] ,
+
               "isVisible": false,
-              "optionsUrl": "https://api.smartfinancial.com/api/v2/vehicle/models?"
+              "optionsUrl": "https://api.smartfinancial.com/api/v2/vehicle/models"
             },
             
             {
